@@ -1,0 +1,23 @@
+.cell {
+    background-color: green;
+    justify-content: stretch;
+    aspect-ratio: 1;
+    display: grid;
+    place-content: center;
+
+}
+
+.game {
+    place-content: center;
+    display: grid;
+    grid-gap: 2px;
+    grid-template-columns: repeat(3, minmax(20%, 128px));
+    margin: 1rem
+}
+
+
+@media only screen and (min-width: 500px) {
+    .game {
+        grid-template-columns: repeat(3, 128px);
+    }
+}
