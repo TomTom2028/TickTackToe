@@ -114,6 +114,13 @@ function doComputerMove(board: GameBoard)
         }
     }));
 
+
+    if (emptyCellArr.length === 0)
+    {
+        return;
+    }
+
+
     const chosenPcCell = emptyCellArr[getRandomInt(emptyCellArr.length)];
 
     chosenPcCell.val = CellValue.COMPUTER;

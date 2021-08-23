@@ -1,13 +1,29 @@
-import React, {FunctionComponent, useState} from "react";
+import React, {FunctionComponent, useEffect, useRef, useState} from "react";
 import {Cell, CellValue, checkGame, createGameBoard, doComputerMove, Gamestate} from "../../logic/TickTackToeLogic";
 import styles from "./TickTackToe.module.css"
+import {useCssRotation} from "../../logic/mouseHooks";
 
 
 let allowCellUpdate = true;
 const CellComponent: FunctionComponent<{val: CellValue, clickEvent: React.MouseEventHandler}> = (props) => {
+
+
+    const [optionalClasses, setOptionalClasses] = useState("");
+
+    const detectionDiv = useRef(null);
+    const changeDiv = useRef(null);
+
+    useCssRotation(detectionDiv, changeDiv, 20)
+
+    useEffect(() => {
+        setOptionalClasses(`${props.val === CellValue.PLAYER ? styles.userClicked : props.val === CellValue.COMPUTER ? styles.pcClicked : ''}`)
+    }, [props.val])
+
     return (
-        <div className={styles.cell} onClick={props.clickEvent}>
-            {props.val}
+        <div ref={detectionDiv} className={styles.gridBox}>
+            <div ref={changeDiv} className={`${styles.cell} ${optionalClasses}`} onClick={props.clickEvent}>
+                {props.val}
+            </div>
         </div>
     )
 }
@@ -21,7 +37,7 @@ const TickTackToe: FunctionComponent = () => {
     const [gameBoard, setGameBoard] = useState(createGameBoard());
 
     function updateCell(clickedCell: Cell): void {
-        if (!allowCellUpdate)
+        if (!allowCellUpdate || clickedCell.val !== CellValue.EMPTY)
         {
             return;
         }
