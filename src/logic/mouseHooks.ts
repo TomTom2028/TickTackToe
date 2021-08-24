@@ -4,8 +4,6 @@ import {MutableRefObject, useEffect} from "react";
 const useCssRotation = (detectionRef: MutableRefObject<HTMLElement | null>, changeRef: MutableRefObject<HTMLElement | null>, multiplier: number) => {
 
 
-
-
     useEffect(() => {
 
         const detectionElem = detectionRef.current as HTMLElement;
@@ -15,7 +13,6 @@ const useCssRotation = (detectionRef: MutableRefObject<HTMLElement | null>, chan
             return;
         }
 
-
         const mouseMoveEvent = (e: MouseEvent) => {
             const rect = detectionElem.getBoundingClientRect();
 
@@ -23,28 +20,23 @@ const useCssRotation = (detectionRef: MutableRefObject<HTMLElement | null>, chan
             const y = e.clientY - rect.top;
 
 
-            const degreesY = multiplier * ((x - rect.width / 2) / rect.width)
-            const degreesX = -multiplier * ((y - rect.height / 2) / rect.height)
+            const degreesY = Math.round(multiplier * ((x - rect.width / 2) / rect.width));
+            const degreesX = Math.round(-multiplier * ((y - rect.height / 2) / rect.height));
 
             changeElem.style.setProperty('--yRot', degreesY.toString() + "deg" )
             changeElem.style.setProperty('--xRot', degreesX.toString() + "deg" )
         }
 
-        const mouseLeaveEvent = (e: MouseEvent) => {
-            changeElem.style.removeProperty('--yRot')
-            changeElem.style.removeProperty('--xRot')
-        }
-
 
         detectionElem.addEventListener('mousemove', mouseMoveEvent);
-        detectionElem.addEventListener('mouseleave', mouseLeaveEvent);
         return () => {
             detectionElem?.removeEventListener('mousemove', mouseMoveEvent)
-            detectionElem?.addEventListener('mouseleave', mouseLeaveEvent);
         }
     }, [multiplier, detectionRef, changeRef])
 }
 
+
+
 export {
-    useCssRotation
+    useCssRotation,
 }

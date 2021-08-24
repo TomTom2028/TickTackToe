@@ -1,14 +1,32 @@
 const boardSize = 3;
 
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 class Cell {
     public readonly i;
     public readonly j;
-    public val;
+    public _val;
+    public _id;
 
     constructor(i: number, j: number, val: CellValue) {
         this.i = i;
         this.j = j;
-        this.val = val
+        this._val = val
+        this._id = uuidv4();
+    }
+
+    set val(val) {
+        this._id = uuidv4();
+        this._val = val;
+    }
+
+    get val() {
+        return this._val;
     }
 }
 
@@ -22,7 +40,8 @@ type GameBoard = Cell[][];
 enum Gamestate {
     WON,
     LOST,
-    PENDING
+    PENDING,
+    STALEMATE
 }
 
 type Direction = {up: 1, right: 0} | {up: 1, right: 1} | {up: 0, right: 1} | {up: -1, right: 1} | {up: -1, right: 0}
@@ -52,10 +71,12 @@ function createGameBoard(): GameBoard {
     return board;
 }
 
+
 function checkGame(board: GameBoard): Gamestate {
     //We only need to test the 5 middle tiles
     // the most middle needs 360 degrees testing
     // the other 4 edge tiles only the 2 adjecent corner tiles
+
 
     for (let i = 0; i < boardSize; i++)
     {
@@ -96,8 +117,19 @@ function checkGame(board: GameBoard): Gamestate {
     }
 
 
+    // at last we check for stalemate (no more empty tiles)
+    const emptyCellArr: Cell[] = new Array<Cell>();
+    board.forEach(row => row.forEach(cell => {
+        if (cell.val === CellValue.EMPTY)
+        {
+            emptyCellArr.push(cell);
+        }
+    }));
 
-
+    if (emptyCellArr.length === 0)
+    {
+        return Gamestate.STALEMATE;
+    }
     return Gamestate.PENDING;
 }
 

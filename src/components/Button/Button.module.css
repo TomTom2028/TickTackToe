@@ -1,0 +1,12 @@
+.btn {
+    display: inline-block;
+    padding: 0.5rem;
+    border-radius: 10px;
+    transition: 0.1s;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn:hover {
+    transform: scale(1.1);
+}
