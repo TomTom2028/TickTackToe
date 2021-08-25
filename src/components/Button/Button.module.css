@@ -2,11 +2,38 @@
     display: inline-block;
     padding: 0.5rem;
     border-radius: 10px;
-    transition: 0.1s;
+    transition: transform 0.1s;
     cursor: pointer;
     text-align: center;
+    user-select: none;
+
+    /* disable blue select box on mobile */
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
-.btn:hover {
-    transform: scale(1.1);
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover {
+        transform: scale(1.1);
+    }
+
+}
+
+.anim {
+    animation-name: btnJump;
+    animation-duration: 0.5s;
+}
+
+@keyframes btnJump {
+    0% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(0.8);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

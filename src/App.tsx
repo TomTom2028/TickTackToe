@@ -8,21 +8,28 @@ import styles from './App.module.css';
 function App() {
     const [text, setText] = useState("");
 
+    let tickTackToeRef: { resetBoard: () => void; } | null;
+    const [enableBtn, setEnableBtn] = useState(false);
+
 
     function handleGameState(gameState: Gamestate)
     {
         switch (gameState)
         {
             case Gamestate.PENDING: setText("Pending");
+            setEnableBtn(false);
             break;
 
             case Gamestate.LOST: setText("Lost");
+            setEnableBtn(true);
             break;
 
             case Gamestate.WON: setText("You won!");
+            setEnableBtn(true);
             break;
 
             case Gamestate.STALEMATE: setText("Stalemate!");
+            setEnableBtn(true);
         }
     }
 
@@ -30,10 +37,10 @@ function App() {
 
   return (
    <div style={{height: '100%'}}>
-       <h1 style={{textAlign: 'center'}}>{text}</h1>
-     <TickTackToe gameStateCb={handleGameState} />
+       <h1 className={styles.headerText}>{text}</h1>
+     <TickTackToe ref={r => tickTackToeRef = r} gameStateCb={handleGameState} />
        <div style={{display: 'grid', placeItems: 'center'}}>
-           <Button className={styles.btn}>Reset</Button>
+           <Button className={styles.btn} onClick={() => tickTackToeRef?.resetBoard()} enabled={enableBtn} enabledStyle={styles.btnEnabled} disabledStyle={styles.btnDisabled}>Reset</Button>
        </div>
    </div>
   );

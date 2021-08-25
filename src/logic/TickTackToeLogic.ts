@@ -1,32 +1,14 @@
 const boardSize = 3;
 
-function uuidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
-
 class Cell {
     public readonly i;
     public readonly j;
-    public _val;
-    public _id;
+    public val;
 
     constructor(i: number, j: number, val: CellValue) {
         this.i = i;
         this.j = j;
-        this._val = val
-        this._id = uuidv4();
-    }
-
-    set val(val) {
-        this._id = uuidv4();
-        this._val = val;
-    }
-
-    get val() {
-        return this._val;
+        this.val = val
     }
 }
 
@@ -44,16 +26,6 @@ enum Gamestate {
     STALEMATE
 }
 
-type Direction = {up: 1, right: 0} | {up: 1, right: 1} | {up: 0, right: 1} | {up: -1, right: 1} | {up: -1, right: 0}
-                | {up: -1, right: -1} | {up: 0, right: -1} | {up: 1, right: -1};
-
-interface MoveLocation {
-    i: number,
-    j: number;
-}
-
-type PlayerLocation = MoveLocation;
-type ComputerLocation = MoveLocation;
 
 function createGameBoard(): GameBoard {
     const board: Cell[][] = [];
@@ -63,7 +35,6 @@ function createGameBoard(): GameBoard {
         const row: Cell[] = []
         for (let j = 0; j < boardSize; j++)
         {
-            let c = CellValue.EMPTY
             row.push(new Cell(i, j, CellValue.EMPTY));
         }
         board.push(row);

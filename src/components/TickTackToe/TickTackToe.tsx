@@ -1,10 +1,18 @@
-import React, {FunctionComponent, useEffect, useRef, useState} from "react";
+import React, {
+    forwardRef,
+    FunctionComponent,
+    PropsWithChildren,
+    Ref,
+    useEffect,
+    useImperativeHandle,
+    useRef,
+    useState
+} from "react";
 import {Cell, CellValue, checkGame, createGameBoard, doComputerMove, Gamestate} from "../../logic/TickTackToeLogic";
 import styles from "./TickTackToe.module.css"
 import {useCssRotation} from "../../logic/mouseHooks";
 
 
-let allowCellUpdate = true;
 const CellComponent: FunctionComponent<{val: CellValue, clickEvent: React.MouseEventHandler}> = (props) => {
 
     function convertCellValToClass(celVal: CellValue) {
@@ -54,15 +62,30 @@ const CellComponent: FunctionComponent<{val: CellValue, clickEvent: React.MouseE
 
 type GameStateCb = (state: Gamestate) => void
 
-const TickTackToe: FunctionComponent<{gameStateCb: GameStateCb}> = (props) => {
+
+
+const TickTackToe = forwardRef((props: PropsWithChildren<{gameStateCb: GameStateCb}>, ref: Ref<{resetBoard: typeof resetBoard}>) => {
 
 
     const [gameBoard, setGameBoard] = useState(createGameBoard());
     const [gameState, setGameState] = useState(Gamestate.PENDING);
+    const [allowCellUpdate, setAllowCellUpdate] = useState(true);
+
+    useImperativeHandle(ref, () => ({
+        resetBoard
+    }))
+
+    function resetBoard()
+    {
+        setGameBoard(createGameBoard);
+        setAllowCellUpdate(true);
+        setGameState(Gamestate.PENDING);
+
+    }
 
     useEffect(() => {
         props.gameStateCb(gameState);
-        }, [gameBoard, gameState, props])
+        }, [gameState])
 
     function updateCell(clickedCell: Cell): void {
         if (!allowCellUpdate || clickedCell.val !== CellValue.EMPTY)
@@ -72,7 +95,7 @@ const TickTackToe: FunctionComponent<{gameStateCb: GameStateCb}> = (props) => {
 
         clickedCell.val = CellValue.PLAYER;
         setGameBoard([...gameBoard]);
-        allowCellUpdate = false;
+        setAllowCellUpdate(false);
         if (checkGame(gameBoard) === Gamestate.WON) {
             setGameState(Gamestate.WON)
         }
@@ -89,7 +112,7 @@ const TickTackToe: FunctionComponent<{gameStateCb: GameStateCb}> = (props) => {
                 else {
                     if (localGameState !== Gamestate.STALEMATE)
                     {
-                        allowCellUpdate = true;
+                        setAllowCellUpdate(true);
                     }
                    setGameState(localGameState);
                 }
@@ -113,7 +136,7 @@ const TickTackToe: FunctionComponent<{gameStateCb: GameStateCb}> = (props) => {
             }
         </div>
     )
-}
+});
 
 
 export {

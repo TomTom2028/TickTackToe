@@ -1,5 +1,19 @@
 .btn {
     color: white;
+    font-size: min(1rem, 6vw);
+    min-width: 5em;
+}
+
+
+.btnEnabled {
     background: darkblue;
-    min-width: 5rem;
+}
+
+.btnDisabled {
+    background: lightslategray;
+}
+
+.headerText {
+    text-align: center;
+    font-size: min(2rem, 8vw);
 }
