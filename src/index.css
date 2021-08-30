@@ -6,6 +6,15 @@ html, body, #root {
     font-family: 'Roboto', sans-serif;
 }
 
+body {
+    --bgCol: #19323C;
+    --textCol: #D7D9CE;
+
+    background-color: var(--bgCol);
+    color: var(--textCol);
+}
+
+
 h1 {
     margin-top: 1rem;
     font-size: 200%;

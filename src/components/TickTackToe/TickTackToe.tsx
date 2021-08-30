@@ -26,8 +26,8 @@ const CellComponent: FunctionComponent<{val: CellValue, clickEvent: React.MouseE
 
 
 
-    const detectionDiv = useRef(null);
-    const changeDiv = useRef(null);
+    const detectionDiv = useRef<HTMLDivElement | null>(null);
+    const changeDiv = useRef<HTMLDivElement | null>(null);
 
     useCssRotation(detectionDiv, changeDiv, 20)
 
@@ -39,6 +39,9 @@ const CellComponent: FunctionComponent<{val: CellValue, clickEvent: React.MouseE
     const handleClick = (e: React.MouseEvent<Element, MouseEvent>) => {
         props.clickEvent(e)
     }
+
+
+
 
     return (
         <div ref={detectionDiv} className={`${styles.gridBox} ${visableClass}`}>

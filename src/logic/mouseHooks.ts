@@ -1,42 +1,72 @@
-import {MutableRefObject, useEffect} from "react";
+import {MutableRefObject, useEffect, useState} from "react";
 
 
 const useCssRotation = (detectionRef: MutableRefObject<HTMLElement | null>, changeRef: MutableRefObject<HTMLElement | null>, multiplier: number) => {
 
+    const [relaX, relaY] = useElemMouseDetection(detectionRef);
 
     useEffect(() => {
-
-        const detectionElem = detectionRef.current as HTMLElement;
-        const changeElem = changeRef.current as HTMLElement
-        if (detectionElem == null || changeElem == null)
+        if (changeRef.current === null || detectionRef.current === null)
         {
             return;
         }
 
-        const mouseMoveEvent = (e: MouseEvent) => {
-            const rect = detectionElem.getBoundingClientRect();
-
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+        const rect = detectionRef.current.getBoundingClientRect();
 
 
-            const degreesY = Math.round(multiplier * ((x - rect.width / 2) / rect.width));
-            const degreesX = Math.round(-multiplier * ((y - rect.height / 2) / rect.height));
+        const elem = changeRef.current;
 
-            changeElem.style.setProperty('--yRot', degreesY.toString() + "deg" )
-            changeElem.style.setProperty('--xRot', degreesX.toString() + "deg" )
-        }
+        const degreesY = Math.round(multiplier * ((relaX - rect.width / 2) / rect.width));
+        const degreesX = Math.round(-multiplier * ((relaY - rect.height / 2) / rect.height));
 
 
-        detectionElem.addEventListener('mousemove', mouseMoveEvent);
-        return () => {
-            detectionElem?.removeEventListener('mousemove', mouseMoveEvent)
-        }
-    }, [multiplier, detectionRef, changeRef])
+
+
+        elem.style.setProperty('--yRot', degreesY.toString() + "deg" )
+        elem.style.setProperty('--xRot', degreesX.toString() + "deg" )
+
+
+
+    }, [relaX, relaY]);
 }
+
+const useElemMouseDetection = (ref: MutableRefObject<HTMLElement | null>) => {
+
+    const [x, setX] = useState(0);
+    const [y, setY] = useState(0);
+
+    useEffect(() => {
+        const elem = ref.current;
+        if (elem === null)
+        {
+            return;
+        }
+
+        const mouseEvent = (e: MouseEvent) => {
+            const rect = elem.getBoundingClientRect();
+
+            setX(e.clientX - rect.left);
+             setY(e.clientY - rect.top);
+        }
+
+        elem.addEventListener('mousemove', mouseEvent);
+
+
+        return () => {
+            elem.removeEventListener('mousemove', mouseEvent)
+        }
+    }, [ref]);
+
+    return [x, y];
+}
+
+
+
+
 
 
 
 export {
     useCssRotation,
+    useElemMouseDetection
 }

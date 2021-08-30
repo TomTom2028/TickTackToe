@@ -42,6 +42,7 @@ function App() {
        <div style={{display: 'grid', placeItems: 'center'}}>
            <Button className={styles.btn} onClick={() => tickTackToeRef?.resetBoard()} enabled={enableBtn} enabledStyle={styles.btnEnabled} disabledStyle={styles.btnDisabled}>Reset</Button>
        </div>
+       <p>Created by: Robbe Hovaert</p>
    </div>
   );
 }
