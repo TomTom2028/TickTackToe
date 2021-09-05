@@ -44,10 +44,10 @@ const CellComponent: FunctionComponent<{val: CellValue, clickEvent: React.MouseE
 
 
     return (
-        <div ref={detectionDiv} className={`${styles.gridBox} ${visableClass}`}>
+        <div ref={detectionDiv} className={`${styles.gridBox} ${visableClass}`} onClick={handleClick}>
 
 
-            <div ref={changeDiv} className={`${styles.cell}`} onClick={handleClick}>
+            <div ref={changeDiv} className={`${styles.cell}`}>
                 <div className={styles.cellEmpty}>
                     {CellValue.EMPTY}
                 </div>

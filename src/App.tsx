@@ -36,14 +36,19 @@ function App() {
 
 
   return (
-   <div style={{height: '100%'}}>
-       <h1 className={styles.headerText}>{text}</h1>
-     <TickTackToe ref={r => tickTackToeRef = r} gameStateCb={handleGameState} />
-       <div style={{display: 'grid', placeItems: 'center'}}>
-           <Button className={styles.btn} onClick={() => tickTackToeRef?.resetBoard()} enabled={enableBtn} enabledStyle={styles.btnEnabled} disabledStyle={styles.btnDisabled}>Reset</Button>
-       </div>
-       <p>Created by: Robbe Hovaert</p>
-   </div>
+      <div className={styles.container}>
+          <main>
+              <h1 className={styles.headerText}>{text}</h1>
+              <TickTackToe ref={r => tickTackToeRef = r} gameStateCb={handleGameState} />
+              <div style={{display: 'grid', placeItems: 'center'}}>
+                  <Button className={styles.btn} onClick={() => tickTackToeRef?.resetBoard()} enabled={enableBtn} enabledStyle={styles.btnEnabled} disabledStyle={styles.btnDisabled}>Reset</Button>
+              </div>
+          </main>
+          <footer className={styles.footer}>
+              <p>Created by: Robbe Hovaert</p>
+          </footer>
+      </div>
+
   );
 }
 

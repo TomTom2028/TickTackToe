@@ -17,3 +17,21 @@
     text-align: center;
     font-size: min(2rem, 8vw);
 }
+
+
+/* for sticky footer */
+.container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
+.footer {
+    grid-row-start: 2;
+    grid-row-end: 3;
+}
+.footer > p {
+    text-align: right;
+    padding-bottom: 5px;
+    padding-right: 5px;
+}
